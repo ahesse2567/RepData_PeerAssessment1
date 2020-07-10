@@ -1,5 +1,6 @@
 ---
 title: "Reproducible Research: Peer Assessment 1"
+author: "Anton Hesse"
 output: 
   html_document:
     keep_md: true
@@ -8,18 +9,116 @@ output:
 
 ## Loading and preprocessing the data
 
+Load libraries
+```{r load libraries, message = FALSE}
+library(tidyverse)
+```
+
+Load the data
+```{r load data, message = FALSE}
+activity <- read_csv("activity.csv")
+```
+
+Change steps and intervals to integer data and take a quick look
+```{r mutate data types}
+activity <- activity %>% 
+    mutate(interval = as.integer(interval)) %>% 
+    mutate(steps = as.integer(steps)) %>% 
+    filter(!is.na(steps)) %>% # completely removing rows with NA will help for later calculations of means and medians
+    glimpse()
+```
 
 
 ## What is mean total number of steps taken per day?
 
+We first need to split the data by day
 
+```{r split by day}
+activityByDay <- split(activity, activity$date)
+```
+
+Next we need to calculate the total number of steps taken each day while removing NA values
+
+```{r total steps per day}
+stepsPerDay <- sapply(activityByDay, function(x) sum(x[[1]], na.rm = TRUE))
+stepsPerDay <- as.data.frame(stepsPerDay)
+head(stepsPerDay)
+```
+
+Next we can view the distrubtion of steps per day with a histogram
+
+```{r steps per day histogram}
+ggplot(stepsPerDay, aes(x = stepsPerDay)) +
+    geom_histogram(bins = 25) +
+    ggtitle("Steps Per Day") +
+    theme(plot.title = element_text(hjust = 0.5)) +
+    xlab("Steps Per Day") +
+    ylab("Count")
+```
+
+We can also calculate measures of center with the mean and median steps per day
+
+```{r mean and median steps per day}
+mean(stepsPerDay$stepsPerDay) # mean
+median(stepsPerDay$stepsPerDay) # median
+```
 
 ## What is the average daily activity pattern?
 
+We will start by grouping the data by interval and then taking the mean of each intveral
 
+```{r steps by interval}
+stepsByInterval <- activity %>% 
+    group_by(interval) %>% 
+    summarize(steps = mean(steps))
+```
+Next, we will plot the invertals on the x axis and the average number of steps in that inverval across all days on the y axis
+
+```{r time series steps per interval}
+ggplot(stepsByInterval, aes(x=interval, y=steps)) +
+    geom_line() +
+    ggtitle("Average Steps Per Day for Each 5-minute Inverval")+
+    theme(plot.title = element_text(hjust = 0.5)) +
+    xlab("Interval") +
+    ylab("Average Steps During Inverval")
+```
+
+The interval with the greatest number of steps, on average, is the 835th interval
+
+```{r max average steps in an interval}
+which(stepsByInterval$steps == max(stepsByInterval$steps))
+stepsByInterval[104,]
+```
 
 ## Imputing missing values
 
+Given that we removed quite a few NA values, it's possible this would lead to bias results. Let's calculate how many rows we removed previously.
 
+```{r rows with NA}
+activity <- read_csv("activity.csv")
+sum(apply(activity, MARGIN = 1, anyNA))
+```
+We should impute some data. To determine which data we should impute, let's compare the mean and median steps within a given interval.
+
+```{r mean and median steps in interal}
+activity <- activity %>% 
+    mutate(interval = as.integer(interval)) %>% 
+    mutate(steps = as.integer(steps)) %>% 
+    filter(!is.na(steps))
+
+stepsByInterval <- activity %>% 
+    group_by(interval) %>% 
+    summarize(meanSteps = mean(steps), medianSteps = median(steps))
+
+ggplot(stepsByInterval) +
+    geom_line(aes(x=interval, y=meanSteps, color = "blue")) +
+    geom_line(aes(x=interval, y=medianSteps, color = "red")) +
+    ggtitle("Mean and Median Steps Per Day for Each 5-minute Inverval")+
+    theme(plot.title = element_text(hjust = 0.5)) +
+    xlab("Interval") +
+    ylab("Steps During Inverval")
+```
+
+The median and the mean for each interval are very different. Often, the median value is 0. 
 
 ## Are there differences in activity patterns between weekdays and weekends?
