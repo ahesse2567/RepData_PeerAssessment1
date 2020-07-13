@@ -80,7 +80,7 @@ ggplot(stepsPerDay, aes(x = stepsPerDay)) +
     ylab("Count")
 ```
 
-![](PA1_template_files/figure-html/steps per day histogram-1.png)<!-- -->
+![](PA1_template_files/figure-html/steps_per_day_histogram-1.png)<!-- -->
 
 We can also calculate measures of center with the mean and median steps per day
 
@@ -143,7 +143,7 @@ ggplot(stepsByInterval) +
     ylab("Average Steps During Inverval")
 ```
 
-![](PA1_template_files/figure-html/time series steps per interval-1.png)<!-- -->
+![](PA1_template_files/figure-html/time_series_steps_per_interval-1.png)<!-- -->
 
 The interval with the greatest number of steps, on average, is the 835th interval
 
@@ -208,7 +208,7 @@ ggplot(stepsByInterval) +
     scale_color_manual(labels = c("Mean", "Median"), values = c("red", "blue"))
 ```
 
-![](PA1_template_files/figure-html/mean and median steps in interal-1.png)<!-- -->
+![](PA1_template_files/figure-html/mean_and_median_steps_in_interal-1.png)<!-- -->
 
 The median and the mean for each interval are very different. Often, the median value is 0. Imputing with the median will likely be a vast underestimate. The mean and median steps across the entire dataset is 10766.19 and 10765, respectively. Those are remarkably similar, suggesting that the data isn't skewed much when considering an entire day of data. However, the sums of the average and median steps per interval are dramatically different
 
@@ -275,7 +275,7 @@ ggplot(imputedStepsPerDay) +
     theme(plot.title = element_text(hjust = 0.5))
 ```
 
-![](PA1_template_files/figure-html/imputed steps per day histogram-1.png)<!-- -->
+![](PA1_template_files/figure-html/imputed_steps_per_day_histogram-1.png)<!-- -->
 
 We can now calculate the mean and median steps per day after imputing the data
 
@@ -351,4 +351,4 @@ ggplot(weekday_vs_weekend_steps) +
     ylab("Average Steps During Inverval")
 ```
 
-![](PA1_template_files/figure-html/mean steps per interval weekend vs. weekday-1.png)<!-- -->
+![](PA1_template_files/figure-html/mean_steps_per_interval_weekend_vs._weekday-1.png)<!-- -->
