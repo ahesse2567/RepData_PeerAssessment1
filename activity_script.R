@@ -131,4 +131,8 @@ weekday_vs_weekend_steps <- activity.complete %>%
 
 ggplot(weekday_vs_weekend_steps) +
     geom_line(aes(x = interval, y = meanSteps, color = weekend)) +
-    facet_grid(weekday_vs_weekend_steps$weekend)
+    facet_grid(weekday_vs_weekend_steps$weekend) +
+    ggtitle("Average Steps Per Day for Each 5-minute Inverval")+
+    theme(plot.title = element_text(hjust = 0.5)) +
+    xlab("Interval") +
+    ylab("Average Steps During Inverval")

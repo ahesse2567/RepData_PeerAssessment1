@@ -3,7 +3,7 @@ title: "Reproducible Research: Peer Assessment 1"
 author: "Anton Hesse"
 output: 
   html_document:
-    keep_md: true
+    keep_md: yes
 ---
 
 
