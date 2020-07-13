@@ -2,7 +2,7 @@
 title: "Reproducible Research: Peer Assessment 1"
 author: "Anton Hesse"
 output: 
-  html_document:
+  html_document: 
     keep_md: yes
 ---
 
@@ -131,7 +131,7 @@ Given that the sum of the median steps per interval is much lower than the sum o
 
 We can impute the mean values with the following for loop. This for loop checks if a step value is NA. If if there is an NA value, it records what interval the NA value was associated with. Then, it find which row the stepsByInterval dataframe contains that same interval value. If finally replaces NA value with the average step value from the stepsByInterval dataframe.
 
-```{r impute_mean, message = FALSE, cache=TRUE}
+```{r impute_mean, message = FALSE, cache=FALSE}
 activity.imputed <- read_csv("activity.csv")
 
 for(i in 1:nrow(activity.imputed)) {
